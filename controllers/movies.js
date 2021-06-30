@@ -4,12 +4,14 @@ const AuthError = require('../errors/401-AuthError');
 const ValidationError = require('../errors/400-ValidationError');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const userId = req.user._id;
+  Movie.find({ owner: userId })
     .then((movie) => res.send(movie))
     .catch(next);
 };
 
 module.exports.createMovie = (req, res, next) => {
+  const owner = req.user._id;
   const {
     country,
     director,
@@ -35,26 +37,42 @@ module.exports.createMovie = (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
-    owner: req.user._id,
+    owner,
   })
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные'));
+        next(new ValidationError(err.mesage));
       }
       next(err);
     });
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.id)
-    .orFail(new NotFoundError('Фильм не найден'))
+  const { movieId } = req.params;
+  const userId = req.user._id;
+
+  Movie.findById(movieId)
+    .orFail(() => {
+      throw new NotFoundError('Фильм не найден');
+    })
     .then((movie) => {
-      if (req.user._id.toString() === movie.owner.toString()) {
-        return movie.remove()
-          .then(() => res.send({ message: 'Фильм удален' }));
+      if (movie.owner.toString() !== userId) {
+        throw new AuthError(
+          'Это не ваш фильм. Вы не можете удалять чужие',
+        );
       }
-      throw new AuthError('Вы не можете удалять чужие фильмы');
+
+      Movie.findByIdAndRemove(movieId)
+        .then((movieToRemove) => res.send(movieToRemove))
+        .catch(next);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
     })
     .catch(next);
 };
