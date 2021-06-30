@@ -10,12 +10,9 @@ module.exports.updateUserValidation = celebrate({
 });
 
 module.exports.movieValidation = celebrate({
-  params: Joi.object()
-    .keys({
-      id: Joi.string().required().length(24).hex(),
-    })
-    .unknown(true),
-
+  params: Joi.object().keys({
+    movieId: Joi.string().hex().length(24),
+  }),
 });
 
 module.exports.createMovieValidation = celebrate({
@@ -25,11 +22,11 @@ module.exports.createMovieValidation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().regex(/^(https?:\/\/)([\da-z.-]+)\.([a-z.]{2,6})([/\w\W.-]*)#?$/),
-    trailer: Joi.string().required().regex(/^(https?:\/\/)([\da-z.-]+)\.([a-z.]{2,6})([/\w\W.-]*)#?$/),
+    image: Joi.string().required(),
+    trailer: Joi.string().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    thumbnail: Joi.string().required().regex(/^(https?:\/\/)([\da-z.-]+)\.([a-z.]{2,6})([/\w\W.-]*)#?$/),
+    thumbnail: Joi.string().required(),
     movieId: Joi.number().required(),
   }),
 });
