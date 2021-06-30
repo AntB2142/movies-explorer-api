@@ -17,10 +17,7 @@ mongoose.connect('mongodb://localhost:27017/bitfilms', {
   useUnifiedTopology: true,
 });
 
-app.use(cors({
-  origin: 'https://movies-explorer-antb.nomoredomains.club/',
-  credentials: true,
-}));
+app.use(cors());
 
 app.use(express.json());
 
