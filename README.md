@@ -3,8 +3,6 @@
 ![Node](https://img.shields.io/badge/-Node.js-469837?logo=Node.js&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/-JavaScript-f3de35?logo=javaScript&logoColor=black)
 
-## https: https://api.movies-explorer-antb.nomoredomains.club
-
 ## бэкенд для проекта Movie Explorer
 
 ## Стек
