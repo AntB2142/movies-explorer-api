@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const limiter = require('./middlewares/limiter');
 const indexRouter = require('./routes/index');
 
-const { PORT = 3005 } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
 
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/bitfilms', {
