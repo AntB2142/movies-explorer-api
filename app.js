@@ -10,7 +10,7 @@ const indexRouter = require('./routes/index');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/bitfilms', {
+mongoose.connect('mongodb://localhost:27017/bitfilms', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
